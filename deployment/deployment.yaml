@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gonew
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: gonew
+  template:
+    metadata:
+      labels:
+        name: gonew
+    spec:
+      containers:
+      - image: kiranbabycontainerreg.azurecr.io/kiranbabycontainerrepo:gonew
+        name: kiranbabycontainerreg
+        ports:
+          - containerPort: 8081
+      imagePullSecrets: 
+      - name: gonewsecret
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gonew-service
+spec:
+  type: LoadBalancer
+  selector:
+    name: gonew
+  ports:
+  - name: http  
+    port: 80
+    targetPort: 8081
